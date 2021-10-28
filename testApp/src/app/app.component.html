@@ -1,0 +1,74 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+<div class="whole-thing">
+  <h4>Output:</h4>
+  Value: {{ myForm.value | json }}
+
+  <hr>
+
+  <h1>Form</h1>
+
+  <mat-form-field>
+    <input matInput placeholder="First Name" type="text" formControlName="firstName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="Last Name" type="text" formControlName="lastName">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Choose your birthday date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+    <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Framework</mat-label>
+    <mat-select  formControlName="framework">
+      <mat-option *ngFor="let framework of frameworks;" [value]="framework">
+        {{framework}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="show">
+    <mat-label>Version</mat-label>
+    <mat-select  formControlName="frameworkVersion">
+      <mat-option *ngFor="let version of versions[pointer];" [value]="version">
+        {{version}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+    
+  <mat-form-field>
+    <input matInput type="email" placeholder="Email" formControlName="email">
+    <mat-error *ngIf="email!.invalid && email!.dirty">{{email!.value}} is already taken or invalid</mat-error>
+    <mat-hint *ngIf="email!.pending">Loading...</mat-hint>
+  </mat-form-field>
+  <div formArrayName="hobbies">
+
+    <div *ngFor="let hobbie of hobbieForms.controls; let i=index" [formGroupName]="i">
+
+
+        <mat-form-field class="xs" class="style">
+            <input matInput placeholder="name" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field class="xs">
+            <input matInput placeholder="duration" formControlName="duration">
+        </mat-form-field>
+
+
+        <button mat-raised-button color="warn" (click)="deleteHobbie(i)">Delete</button>
+
+    </div>
+
+</div>
+
+<button mat-raised-button type="button" color="primary" (click)="addHobbie()">Add Hobbie</button>
+
+<button mat-button color="primary" type="submit" [disabled]="myForm.invalid">Submit Form</button>
+</div> 
+
+</form>
